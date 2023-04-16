@@ -4,7 +4,8 @@
 
 void print_int_elem(t_elem *elem, void *o)
 {
-    printf("%d ", *((int *)elem->content));
+	// printf("aqui\n");
+    printf("%d \n", *(int *)elem->content);
 }
 
 void print_elem(t_elem *elem) {
@@ -15,63 +16,56 @@ void print_elem(t_elem *elem) {
     }
 }
 
-void print_list(void) {
-    if ((*__this()) == NULL) {
-        printf("List is empty\n");
-        return;
-    }
-    printf("List contents:\n");
-    t_elem *current = (*__this());
-    while (current != NULL) {
-        printf("%i \n", *(int *)current->content);
-        current = current->next;
-    }
-    printf("\n");
-}
-
 int main()
 {
-	t_array *my_array;
+	void *my_array;
+	void *my_array2;
 
-	my_array = array(create_array());
+	my_array = create_array();
+	my_array2 = create_array();
 
     int *elem1 = malloc(sizeof(int));
     *elem1 = 10;
-    my_array->__add(elem1);
-	printf("[content] %i\n", *(int *)(my_array->begin->content));
-
-    int *elem2 = malloc(sizeof(int));
+    array(my_array)->add(elem1);
+	array(my_array2)->add(elem1);
+	//if (array(my_array)->begin)
+		//printf("[content] %i\n", *(int *)(my_array->begin->content));
+	//if (array(my_array2)->begin)
+		//printf("[content2] %i\n", *(int *)(my_array2->begin->content));
+    
+	int *elem2 = malloc(sizeof(int));
     *elem2 = 20;
-    my_array->__add(elem2);
-	printf("[content] %i\n", *(int *)(my_array->begin->next->content));
+    array(my_array)->add(elem2);
 
     int *elem3 = malloc(sizeof(int));
     *elem3 = 30;
-    my_array->__add(elem3);
-	printf("[content] %i\n", *(int *)(my_array->begin->next->content));
+    array(my_array)->add(elem3);
 
-    printf("Array contents:\n");
-	print_list();
-    //my_array->__apply_all(print_elem, NULL);
+    printf("Array contents my_array1:\n");
+    array(my_array)->apply_all(print_int_elem, NULL);
+
+    // printf("\nArray contents my_array2:\n");
+    // array(my_array2)->apply_all(print_int_elem, NULL);
 
     // printf("Switching elements 1 and 3...\n");
     // my_array->switch_elem(my_array->begin, my_array->end);
 
     // printf("Array contents after switching:\n");
-    // my_array->__apply_all(print_elem, NULL);
+    // my_array->apply_all(print_elem, NULL);
 
-    printf("Deleting element 2...\n");
-    t_elem *elem_to_delete;
-	elem_to_delete = my_array->__get_index(my_array->begin->next);
-    my_array->del(elem_to_delete);
+    printf("\nDeleting element 2...\n");
+    t_elem *elem_to_delete = array(my_array)->begin;
+	
+    printf("Array after delete contents my_array1:\n");
+    array(my_array)->del(elem_to_delete);
+	//printf("antes do apply--%p\n", (*__this())->begin);
+	//printf("antes do apply--%d\n", *(int *)(*__this())->begin->content);
+    array(my_array)->apply_all(print_int_elem, NULL);
 
-    printf("Array contents after deleting:\n");
-	print_list();
-    //my_array->__apply_all(print_elem, NULL);
-
-    printf("Clearing array...\n");
-    my_array->__clear();
-
+    // printf("\nClearing array 1...\n");
+    array(my_array)->clear();
+    // //printf("Clearing array 2...\n");
+    array(my_array2)->clear();
     return 0;
 }
 

@@ -2,7 +2,7 @@ NAME = linked
 
 CC = cc
 
-CFLAGS = #-O3 -Wall -Wextra -fsanitize=address -g #-Werror
+CFLAGS = -O3 -Wall -Wextra -fsanitize=address -g #-Werror
 
 SRCS = lists_aux.c \
 	   main.c \

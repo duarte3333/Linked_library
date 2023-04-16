@@ -35,9 +35,11 @@ void	__add(void *content)
 		(*__this())->begin = elem;
 	else
 	{
-		(*__this())->begin->next = elem;
-		(*__this())->begin->next->next = NULL;
+		elem->previous = (*__this())->end;
+		(*__this())->end->next = elem;
 	}
+	(*__this())->end = elem;
+	
 }
 
 /* Elimina todos os elementos do array */
@@ -50,12 +52,18 @@ void __clear()
     while (elem)
     {
         next = elem->next;
+        free(elem->content);
         free(elem);
         elem = next;
     }
     (*__this())->begin = NULL;
-    (*__this())->end = NULL;
+    (*__this())->end = NULL; 
     (*__this())->size = 0;
+}
+
+void	__destroy(void (*f)(t_elem* , void*), void *o)
+{
+	
 }
 
 /* Retorna o indice do elemento na linked list */
@@ -76,25 +84,29 @@ int __get_index(t_elem *elem)
     return -1;
 }
 
-void del(t_elem *elem)
+void __del(t_elem *elem)
 {
     if (elem)
     {
-        if (elem->previous)
-            elem->previous->next = elem->next;
-        else
-            (*__this())->begin = elem->next;
-        if (elem->next)
-            elem->next->previous = elem->previous;
-        else
-            (*__this())->end = elem->previous;
+
+ 		if (!elem->previous)
+		{
+			(*__this())->begin = elem->next;
+			(*__this())->begin->previous = NULL;
+		}
+		else
+		{
+			elem->previous->next = elem->next;
+			elem->next->previous = elem->previous;
+		}
+		free(elem->content);
         free(elem);
         (*__this())->size--;
     }
 }
 
 
-void __apply_all(void (*f)(t_elem *elem, void *o), void *o)
+void __apply_all(void (*f)(t_elem* , void*), void *o)
 {
     t_elem *elem;
 
@@ -108,13 +120,14 @@ void __apply_all(void (*f)(t_elem *elem, void *o), void *o)
 
 void	*create_array(void)
 {
-	t_array *my_array = array(calloc(sizeof(t_array), 1));
+	t_array *my_array = calloc(sizeof(t_array), 1);
 
-    my_array->__add = __add;
+    my_array->add = __add;
 	//my_array->switch_elem = switch_elem;
-	my_array->del = del;
-	my_array->__clear = __clear;
-	my_array->__get_index = __get_index;
-	//my_array->__apply_all = __apply_all;
+	my_array->del = __del;
+	my_array->clear = __clear;
+	my_array->get_index = __get_index;
+	my_array->apply_all = __apply_all;
+	my_array->destroy = __destroy;
 	return (my_array);
 }

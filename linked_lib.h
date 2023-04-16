@@ -35,11 +35,12 @@ struct s_array
 	t_elem		*end;
 	int			size;
 	void		(*switch_elem)(void *content);
-	void		(*__add)(void *content);
+	void		(*add)(void *content);
 	void		(*del)(t_elem *elem);
-	void		(*__clear)(void);
-	int			(*__get_index)(t_elem *elem);
-	void		(*__apply_all)(void(*f)(t_elem *elem, void *o), void *o);
+	void		(*clear)(void);
+	int			(*get_index)(t_elem *elem);
+	void		(*apply_all)(void(*f)(t_elem *elem, void *o), void *o);
+	void		(*destroy)(void(*f)(t_elem *elem, void *o);
 };		
 
 t_array	**__this(void);
@@ -48,6 +49,7 @@ void	__add(void *content);
 void 	__clear();
 int 	__get_index(t_elem *elem);
 void 	__apply_all(void (*f)(t_elem *elem, void *o), void *o);
+void	__destroy(void (*f)(t_elem *elem, void *o), void *o);
 void	*create_array(void);
 
 
