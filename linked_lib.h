@@ -27,6 +27,7 @@ struct s_elem
 	void	*content;
 	t_elem	*previous;
 	t_elem	*next;
+	void	(*destroy)(t_elem *del);
 };
 	
 struct s_array
@@ -36,27 +37,23 @@ struct s_array
 	int			size;
 	void		(*switch_elem)(void *content);
 	void		(*add)(void *content);
-	void		(*del)(t_elem *elem);
-	void		(*clear)(void);
+	void		(*del_element)(t_elem *elem);
 	int			(*get_index)(t_elem *elem);
 	void		(*apply_all)(void(*f)(t_elem *elem, void *o), void *o);
-	void		(*destroy)(void(*f)(t_elem *elem, void *o);
+	void		(*free_element)(t_elem* del);
+	void		(*free_all)(void);
+
+
 };		
 
 t_array	**__this(void);
 t_array	*array(void *lst);
 void	__add(void *content);
-void 	__clear();
 int 	__get_index(t_elem *elem);
 void 	__apply_all(void (*f)(t_elem *elem, void *o), void *o);
-void	__destroy(void (*f)(t_elem *elem, void *o), void *o);
+void	__del_element(t_elem* elem);
+void	__free_element(t_elem* del);
+void	__free_all(void);
 void	*create_array(void);
-
-
-// t_elem	*ft_lstnew(void *content);
-// t_elem	*ft_lstlast(t_elem *lst);
-// void	ft_lstadd_front(t_elem **lst, t_elem *new);
-// void	ft_lstadd_back(t_elem **lst, t_elem *new);
-// void	ft_lstdelone(t_elem *lst, void (*del)(void*));
 
 #endif

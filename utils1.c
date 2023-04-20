@@ -30,6 +30,7 @@ void	__add(void *content)
 	elem = (t_elem *)calloc(sizeof(t_elem), 1);
 	if (!elem)
 		return (NULL);
+	elem->destroy = (*__this())->free_element;
 	elem->content = content;
 	if (!(*__this())->begin)
 		(*__this())->begin = elem;
@@ -43,7 +44,7 @@ void	__add(void *content)
 }
 
 /* Elimina todos os elementos do array */
-void __clear()
+void __free_all()
 {
     t_elem *elem;
     t_elem *next;
@@ -59,11 +60,6 @@ void __clear()
     (*__this())->begin = NULL;
     (*__this())->end = NULL; 
     (*__this())->size = 0;
-}
-
-void	__destroy(void (*f)(t_elem* , void*), void *o)
-{
-	
 }
 
 /* Retorna o indice do elemento na linked list */
@@ -84,7 +80,13 @@ int __get_index(t_elem *elem)
     return -1;
 }
 
-void __del(t_elem *elem)
+void	__free_element(t_elem* del)
+{
+	free(del->content);
+	free(del);
+}
+
+void __del_element(t_elem *elem)
 {
     if (elem)
     {
@@ -99,10 +101,24 @@ void __del(t_elem *elem)
 			elem->previous->next = elem->next;
 			elem->next->previous = elem->previous;
 		}
-		free(elem->content);
-        free(elem);
         (*__this())->size--;
     }
+}
+
+void __base_del(void)
+{
+	t_elem *temp;
+	t_elem *elem;
+
+    elem = (*__this())->begin;
+	while (elem)
+	{
+		temp = elem;
+		elem = elem->next;
+		if (temp && temp->destroy)
+			temp->destroy(temp);
+	}
+
 }
 
 
@@ -124,10 +140,10 @@ void	*create_array(void)
 
     my_array->add = __add;
 	//my_array->switch_elem = switch_elem;
-	my_array->del = __del;
-	my_array->clear = __clear;
+	my_array->del_element = __del_element;
 	my_array->get_index = __get_index;
 	my_array->apply_all = __apply_all;
-	my_array->destroy = __destroy;
+	my_array->free_element = __free_element;
+	my_array->free_all = __free_all;
 	return (my_array);
 }

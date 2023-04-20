@@ -4,6 +4,12 @@
 		"*.tcc": "c",
 		"compare": "c",
 		"numeric": "c",
-		"cmath": "c"
+		"cmath": "c",
+		"array": "c",
+		"bitset": "c",
+		"string_view": "c",
+		"initializer_list": "c",
+		"utility": "c",
+		"memory_resource": "c"
 	}
 }

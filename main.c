@@ -28,6 +28,9 @@ int main()
     *elem1 = 10;
     array(my_array)->add(elem1);
 	array(my_array2)->add(elem1);
+	array(my_array2)->begin->destroy = NULL;
+
+	//array(my_array2)->add(elem1);
 	//if (array(my_array)->begin)
 		//printf("[content] %i\n", *(int *)(my_array->begin->content));
 	//if (array(my_array2)->begin)
@@ -36,6 +39,7 @@ int main()
 	int *elem2 = malloc(sizeof(int));
     *elem2 = 20;
     array(my_array)->add(elem2);
+
 
     int *elem3 = malloc(sizeof(int));
     *elem3 = 30;
@@ -54,18 +58,19 @@ int main()
     // my_array->apply_all(print_elem, NULL);
 
     printf("\nDeleting element 2...\n");
-    t_elem *elem_to_delete = array(my_array)->begin;
+    t_elem *elem_to_delete = array(my_array)->begin->next;
 	
     printf("Array after delete contents my_array1:\n");
-    array(my_array)->del(elem_to_delete);
+    array(my_array)->del_element(elem_to_delete);
+	array(my_array)->free_element(elem_to_delete);
 	//printf("antes do apply--%p\n", (*__this())->begin);
 	//printf("antes do apply--%d\n", *(int *)(*__this())->begin->content);
     array(my_array)->apply_all(print_int_elem, NULL);
 
     // printf("\nClearing array 1...\n");
-    array(my_array)->clear();
+    array(my_array)->free_all();
     // //printf("Clearing array 2...\n");
-    array(my_array2)->clear();
+    array(my_array2)->free_all();
     return 0;
 }
 
