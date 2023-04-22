@@ -26,9 +26,9 @@ int main()
 
     int *elem1 = malloc(sizeof(int));
     *elem1 = 10;
-    array(my_array)->add(elem1);
+    array(my_array)->add(elem1)->destroy = NULL;
 	array(my_array2)->add(elem1);
-	array(my_array2)->begin->destroy = NULL;
+	//array(my_array2)->begin->destroy = NULL;
 
 	//array(my_array2)->add(elem1);
 	//if (array(my_array)->begin)
@@ -62,7 +62,7 @@ int main()
 	
     printf("Array after delete contents my_array1:\n");
     array(my_array)->del_element(elem_to_delete);
-	array(my_array)->free_element(elem_to_delete);
+	//array(my_array)->free_element(elem_to_delete);
 	//printf("antes do apply--%p\n", (*__this())->begin);
 	//printf("antes do apply--%d\n", *(int *)(*__this())->begin->content);
     array(my_array)->apply_all(print_int_elem, NULL);

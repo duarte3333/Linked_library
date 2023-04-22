@@ -23,10 +23,12 @@ t_array	*array(void *lst)
 }
 
 /* Adiciona um novo elemento ao array */
-void	__add(void *content)
+t_elem	*__add(void *content)
 {	
 	t_elem	*elem;
 
+	if (!content)
+		return (NULL);
 	elem = (t_elem *)calloc(sizeof(t_elem), 1);
 	if (!elem)
 		return (NULL);
@@ -40,7 +42,7 @@ void	__add(void *content)
 		(*__this())->end->next = elem;
 	}
 	(*__this())->end = elem;
-	
+	return (elem);
 }
 
 /* Elimina todos os elementos do array */
@@ -53,13 +55,16 @@ void __free_all()
     while (elem)
     {
         next = elem->next;
-        free(elem->content);
-        free(elem);
+		if (elem->destroy)
+        	elem->destroy(elem);
+		else
+			free(elem);
         elem = next;
     }
     (*__this())->begin = NULL;
     (*__this())->end = NULL; 
     (*__this())->size = 0;
+	free((*__this()));
 }
 
 /* Retorna o indice do elemento na linked list */
@@ -101,6 +106,10 @@ void __del_element(t_elem *elem)
 			elem->previous->next = elem->next;
 			elem->next->previous = elem->previous;
 		}
+		if (elem->destroy)
+			elem->destroy(elem);
+		else
+			free(elem);
         (*__this())->size--;
     }
 }

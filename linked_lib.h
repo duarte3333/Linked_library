@@ -36,7 +36,7 @@ struct s_array
 	t_elem		*end;
 	int			size;
 	void		(*switch_elem)(void *content);
-	void		(*add)(void *content);
+	t_elem		*(*add)(void *content);
 	void		(*del_element)(t_elem *elem);
 	int			(*get_index)(t_elem *elem);
 	void		(*apply_all)(void(*f)(t_elem *elem, void *o), void *o);
@@ -48,7 +48,7 @@ struct s_array
 
 t_array	**__this(void);
 t_array	*array(void *lst);
-void	__add(void *content);
+t_elem	*__add(void *content);
 int 	__get_index(t_elem *elem);
 void 	__apply_all(void (*f)(t_elem *elem, void *o), void *o);
 void	__del_element(t_elem* elem);
